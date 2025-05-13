@@ -20,14 +20,18 @@ class TicketRepository {
     return await Ticket.create(data);
   }
 
-  async findByVehicle(vehicle: IVehicle["_id"]) {
-    return await Ticket.findOne({ vehicle });
+  async findById(ticketId: ITicket["_id"]) {
+    return await Ticket.findById(ticketId);
   }
 
   async closeTicket(ticketId: ITicket["_id"], cost: number) {
-    return await Ticket.findByIdAndUpdate(ticketId, {
-      $set: { endTime: new Date(), cost },
-    });
+    return await Ticket.findByIdAndUpdate(
+      ticketId,
+      {
+        $set: { endTime: new Date(), cost },
+      },
+      { new: true }
+    );
   }
 }
 

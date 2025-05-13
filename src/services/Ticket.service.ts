@@ -7,17 +7,19 @@ import VehicleRepository from "../repository/Vehicle.repository";
 
 export class TicketService {
   async openTicket(vehicle: IVehicle["_id"], spot: IparkingSpot["_id"]) {
-    await TicketRepository.createTicket({ vehicle, spot });
+    return await TicketRepository.createTicket({ vehicle, spot });
   }
 
-  async getVehicleByPlate(vehiclePlate: string): Promise<IVehicle | null> {
-    return await VehicleRepository.getVehicleByPlate(vehiclePlate);
+  async getTicketById(ticketId: ITicket["_id"]) {
+    return await TicketRepository.findById(ticketId);
   }
 
-  async getActiveTicketByVehicle(
-    vehicleId: IVehicle["_id"]
-  ): Promise<ITicket | null> {
-    return await TicketRepository.findByVehicle(vehicleId);
+  async getVehicleById(vehicle: IVehicle["_id"]): Promise<IVehicle | null> {
+    return await VehicleRepository.getVehicleById(vehicle);
+  }
+
+  async getActiveTicketById(ticketId: ITicket["_id"]): Promise<ITicket | null> {
+    return await TicketRepository.findById(ticketId);
   }
 
   hoursBetween(start: Date, end: Date) {
@@ -26,14 +28,12 @@ export class TicketService {
     return diffInHours;
   }
 
-  async closeTicket(vehiclePlate: string) {
-    const vehicle = await this.getVehicleByPlate(vehiclePlate);
-    const vehicleId = vehicle?.["_id"];
+  async closeTicket(ticket: ITicket): Promise<ITicket | null> {
+    const vehicle = await this.getVehicleById(ticket.vehicle);
     const vehicleType = toVehicleType(vehicle!.type);
-    const ticket = await this.getActiveTicketByVehicle(vehicleId);
     const endTime = new Date();
     const totalHours = this.hoursBetween(endTime, ticket!.startTime!);
     const totalCost = totalHours * VehicleRates[vehicleType];
-    await TicketRepository.closeTicket(ticket?.["_id"], totalCost);
+    return await TicketRepository.closeTicket(ticket?.["_id"], totalCost);
   }
 }

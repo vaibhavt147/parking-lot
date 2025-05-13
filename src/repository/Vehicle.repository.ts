@@ -1,5 +1,5 @@
 import { VehicleTypes } from "../constants/VehicleTypes";
-import { Vehicle } from "../models/Vehicle.model";
+import { IVehicle, Vehicle } from "../models/Vehicle.model";
 
 class VehicleRepository {
   private static instance: VehicleRepository;
@@ -22,6 +22,10 @@ class VehicleRepository {
 
   async getVehicleByPlate(vehiclePlate: string) {
     return await Vehicle.findOne({ vehiclePlate });
+  }
+
+  async getVehicleById(vehicleId: IVehicle["_id"]) {
+    return await Vehicle.findById(vehicleId);
   }
 }
 
