@@ -1,4 +1,4 @@
-import { toVehicleType, VehicleRates } from "../constants/VehicleTypes";
+import { getVehicleType, VehicleRates } from "../constants/VehicleTypes";
 import { IparkingSpot } from "../models/ParkingSpot.model";
 import { ITicket } from "../models/Ticket.model";
 import { IVehicle } from "../models/Vehicle.model";
@@ -30,7 +30,7 @@ export class TicketService {
 
   async closeTicket(ticket: ITicket): Promise<ITicket | null> {
     const vehicle = await this.getVehicleById(ticket.vehicle);
-    const vehicleType = toVehicleType(vehicle!.type);
+    const vehicleType = getVehicleType(vehicle!.type);
     const endTime = new Date();
     const totalHours = this.hoursBetween(endTime, ticket!.startTime!);
     const totalCost = totalHours * VehicleRates[vehicleType];

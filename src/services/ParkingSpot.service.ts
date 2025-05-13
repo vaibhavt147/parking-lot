@@ -1,4 +1,4 @@
-import { toVehicleType } from "../constants/VehicleTypes";
+import { getVehicleType } from "../constants/VehicleTypes";
 import ParkingSpotRepository from "../repository/ParkingSpot.repository";
 
 export class ParkingSpotService {
@@ -17,12 +17,12 @@ export class ParkingSpotService {
     return await ParkingSpotRepository.createParkingSpot({
       spotId,
       floorNumber: floor,
-      type: toVehicleType(type),
+      type: getVehicleType(type),
     });
   }
 
   async getAvailableSpot(type: string) {
-    return await ParkingSpotRepository.getAvailableSpots(toVehicleType(type));
+    return await ParkingSpotRepository.getAvailableSpots(getVehicleType(type));
   }
 
   async parkVehicle(spotId: string, vehiclePlate: string) {
