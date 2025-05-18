@@ -1,5 +1,5 @@
-import { getVehicleType } from "../constants/VehicleTypes";
 import ParkingSpotRepository from "../repository/ParkingSpot.repository";
+import { getVehicleType } from "../utils/VehicleTypes";
 
 export class ParkingSpotService {
   private generateSpotID(floor: number, type: string, number: number): string {

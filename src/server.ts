@@ -1,22 +1,10 @@
 import dotenv from "dotenv";
 dotenv.config();
-import app from "./app";
-import mongoose from "./database/mongoose";
+import { Server } from "./serverClass";
 
-const PORT = process.env.PORT;
+const server = new Server();
 
-async function main() {
-  try {
-    await mongoose.connect();
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
-  } catch (error) {
-    console.error(error);
-    process.exit(1);
-  }
-}
-
-const start = main();
-
-module.exports = start;
+server.start().catch((error) => {
+  console.error("Failed to start server:", error);
+  process.exit(1);
+});

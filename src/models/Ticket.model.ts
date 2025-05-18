@@ -1,14 +1,5 @@
-import { Document, model, Schema } from "mongoose";
-import { IVehicle } from "./Vehicle.model";
-import { IparkingSpot } from "./ParkingSpot.model";
-
-export interface ITicket extends Document {
-  vehicle: IVehicle["_id"];
-  spot: IparkingSpot["_id"];
-  startTime: Date;
-  endTime?: Date;
-  cost?: number;
-}
+import { model, Schema } from "mongoose";
+import { ITicket } from "../interfaces/ITicket";
 
 const TicketSchema = new Schema<ITicket>({
   vehicle: {

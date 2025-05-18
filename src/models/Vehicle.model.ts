@@ -1,10 +1,6 @@
-import { Document, model, Schema } from "mongoose";
-import { VehicleTypes } from "../constants/VehicleTypes";
-
-export interface IVehicle extends Document {
-  type: VehicleTypes;
-  vehiclePlate: string;
-}
+import { model, Schema } from "mongoose";
+import { IVehicle } from "../interfaces/IVehicle";
+import { VehicleTypes } from "../enums/VehicleTypes";
 
 const VehicleSchema = new Schema<IVehicle>({
   vehiclePlate: { type: String, required: true, unique: true },

@@ -1,12 +1,13 @@
-import { getVehicleType, VehicleRates } from "../constants/VehicleTypes";
-import { IparkingSpot } from "../models/ParkingSpot.model";
-import { ITicket } from "../models/Ticket.model";
-import { IVehicle } from "../models/Vehicle.model";
+import { VehicleRates } from "../constants/VehicleTypes";
+import { IParkingSpot } from "../interfaces/IParkingSpot";
+import { ITicket } from "../interfaces/ITicket";
+import { IVehicle } from "../interfaces/IVehicle";
 import TicketRepository from "../repository/Ticket.repository";
 import VehicleRepository from "../repository/Vehicle.repository";
+import { getVehicleType } from "../utils/VehicleTypes";
 
 export class TicketService {
-  async openTicket(vehicle: IVehicle["_id"], spot: IparkingSpot["_id"]) {
+  async openTicket(vehicle: IVehicle["_id"], spot: IParkingSpot["_id"]) {
     return await TicketRepository.createTicket({ vehicle, spot });
   }
 

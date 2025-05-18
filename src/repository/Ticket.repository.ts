@@ -1,6 +1,7 @@
-import { IparkingSpot } from "../models/ParkingSpot.model";
-import { ITicket, Ticket } from "../models/Ticket.model";
-import { IVehicle } from "../models/Vehicle.model";
+import { IParkingSpot } from "../interfaces/IParkingSpot";
+import { ITicket } from "../interfaces/ITicket";
+import { IVehicle } from "../interfaces/IVehicle";
+import { Ticket } from "../models/Ticket.model";
 
 class TicketRepository {
   private static instance: TicketRepository;
@@ -15,7 +16,7 @@ class TicketRepository {
 
   async createTicket(data: {
     vehicle: IVehicle["_id"];
-    spot: IparkingSpot["_id"];
+    spot: IParkingSpot["_id"];
   }): Promise<ITicket> {
     return await Ticket.create(data);
   }

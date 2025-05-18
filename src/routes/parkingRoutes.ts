@@ -1,18 +1,18 @@
 import express from "express";
-import { getVehicleType } from "../constants/VehicleTypes";
 import { ParkingSpotService } from "../services/ParkingSpot.service";
 import { TicketService } from "../services/Ticket.service";
 import { VehicleService } from "../services/Vehicle.service";
-const router = express.Router();
+import { getVehicleType } from "../utils/VehicleTypes";
+const parkingRouter = express.Router();
 
 const vehicleService: VehicleService = new VehicleService();
 const parkingSpotService: ParkingSpotService = new ParkingSpotService();
 const ticketService: TicketService = new TicketService();
 
-router.post("/park", async (req, res) => {
+parkingRouter.post("/park", async (req, res) => {
   try {
     const { type, vehiclePlate } = req.body;
-    const vehicleType = getVehicleType(type.toLowerCase());
+    const vehicleType = getVehicleType(type);
     if (!vehicleType && !vehiclePlate) {
       res.status(400);
       res.send({ message: "Invalid Request" });
@@ -43,7 +43,7 @@ router.post("/park", async (req, res) => {
   }
 });
 
-router.post("/unpark", async (req, res) => {
+parkingRouter.post("/unpark", async (req, res) => {
   try {
     const { ticketId } = req.body;
     const ticket = await ticketService.getTicketById(ticketId);
@@ -55,7 +55,10 @@ router.post("/unpark", async (req, res) => {
     await parkingSpotService.unParkVehicle(ticketId.spot);
     const updatedTicket = await ticketService.closeTicket(ticket);
     res.status(200);
-    res.send({ message: `Total Fare ${updatedTicket?.cost}` });
+    res.send({
+      message: "Thank you for using our services",
+      fair: updatedTicket?.cost,
+    });
   } catch (error) {
     console.error("Unexpected error:", error);
     res.status(500);
@@ -63,16 +66,26 @@ router.post("/unpark", async (req, res) => {
   }
 });
 
-router.post("/addSpot", async (req, res) => {
+parkingRouter.post("/addSpot", async (req, res) => {
   try {
     const { floor, type, number } = req.body;
     const vehicleType = getVehicleType(type);
-    await parkingSpotService.createSpot(floor, vehicleType, number);
+    const parkingspot = await parkingSpotService.createSpot(
+      floor,
+      vehicleType,
+      number
+    );
     res.status(200);
-    res.send({ success: 1, message: "Parking Spot created successfully" });
+    res.send({
+      success: 1,
+      message: "Parking Spot created successfully",
+      id: parkingspot["_id"],
+    });
   } catch (error) {
     console.error("Unexpected error:", error);
     res.status(500);
     res.send({ success: 0, message: `Internal error occured ${error}` });
   }
 });
+
+export default parkingRouter;

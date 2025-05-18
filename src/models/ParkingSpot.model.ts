@@ -1,15 +1,8 @@
-import { Document, model, Schema } from "mongoose";
-import { VehicleTypes } from "../constants/VehicleTypes";
+import { model, Schema } from "mongoose";
+import { VehicleTypes } from "../enums/VehicleTypes";
+import { IParkingSpot } from "../interfaces/IParkingSpot";
 
-export interface IparkingSpot extends Document {
-  spotId: string;
-  floorNumber: number;
-  type: VehicleTypes;
-  isAvailable: boolean;
-  vehiclePlate: string | null;
-}
-
-const parkingSpotSchema = new Schema<IparkingSpot>({
+const parkingSpotSchema = new Schema<IParkingSpot>({
   spotId: { type: String, required: true, unique: true },
   floorNumber: { type: Number, required: true },
   type: { type: String, enum: Object.values(VehicleTypes), required: true },
@@ -17,7 +10,7 @@ const parkingSpotSchema = new Schema<IparkingSpot>({
   vehiclePlate: { type: String, default: null },
 });
 
-export const ParkingSpot = model<IparkingSpot>(
+export const ParkingSpot = model<IParkingSpot>(
   "ParkingSpot",
   parkingSpotSchema
 );

@@ -1,5 +1,6 @@
-import { VehicleTypes } from "../constants/VehicleTypes";
-import { IVehicle, Vehicle } from "../models/Vehicle.model";
+import { VehicleTypes } from "../enums/VehicleTypes";
+import { IVehicle } from "../interfaces/IVehicle";
+import { Vehicle } from "../models/Vehicle.model";
 
 class VehicleRepository {
   private static instance: VehicleRepository;

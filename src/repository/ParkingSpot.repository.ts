@@ -1,5 +1,6 @@
-import { VehicleTypes } from "../constants/VehicleTypes";
-import { IparkingSpot, ParkingSpot } from "../models/ParkingSpot.model";
+import { VehicleTypes } from "../enums/VehicleTypes";
+import { IParkingSpot } from "../interfaces/IParkingSpot";
+import { ParkingSpot } from "../models/ParkingSpot.model";
 
 class ParkingSpotRepository {
   private static instance: ParkingSpotRepository;
@@ -16,7 +17,7 @@ class ParkingSpotRepository {
     spotId: string;
     floorNumber: number;
     type: VehicleTypes;
-  }): Promise<IparkingSpot> {
+  }): Promise<IParkingSpot> {
     return await ParkingSpot.insertOne(data);
   }
 
